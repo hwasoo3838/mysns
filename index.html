@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마이SNS - 사진첩 & 비밀일기</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 로그인 / 회원가입 -->
+<section id="authView" class="auth hidden">
+  <div class="card auth-card">
+    <h1>📷 마이SNS</h1>
+    <p class="sub">사진을 공유하고, 나만의 비밀 일기를 써보세요.</p>
+    <div class="tabs">
+      <button id="tabLogin" class="tab active">로그인</button>
+      <button id="tabSignup" class="tab">회원가입</button>
+    </div>
+    <form id="authForm" autocomplete="on">
+      <label>아이디
+        <input id="username" required minlength="3" maxlength="20" pattern="[A-Za-z0-9_가-힣]+" autocomplete="username" placeholder="영문/숫자/한글 3~20자">
+      </label>
+      <label>비밀번호
+        <input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="6자 이상">
+      </label>
+      <label id="pw2Row" class="hidden">비밀번호 확인
+        <input id="password2" type="password" autocomplete="new-password">
+      </label>
+      <p id="authMsg" class="msg"></p>
+      <button class="btn primary" id="authSubmit" type="submit">로그인</button>
+    </form>
+    <p class="hint">⚠ 비밀 일기는 비밀번호로 암호화됩니다. 비밀번호를 잃어버리면 일기를 복구할 수 없어요.</p>
+  </div>
+</section>
+
+<!-- 메인 -->
+<div id="mainView" class="hidden">
+  <header class="topbar">
+    <div class="brand">📷 마이SNS</div>
+    <nav>
+      <button class="nav active" data-view="feed">피드</button>
+      <button class="nav" data-view="album">내 사진첩</button>
+      <button class="nav" data-view="diary">비밀 일기 🔒</button>
+    </nav>
+    <div class="user"><span id="whoami"></span><button id="logoutBtn" class="btn small">로그아웃</button></div>
+  </header>
+
+  <main>
+    <!-- 피드 -->
+    <section id="feedView" class="view">
+      <h2>친구들의 사진</h2>
+      <div id="feedGrid" class="feed"></div>
+      <p id="feedEmpty" class="empty hidden">아직 공개된 사진이 없어요. 사진첩에서 첫 사진을 올려보세요!</p>
+    </section>
+
+    <!-- 사진첩 -->
+    <section id="albumView" class="view hidden">
+      <h2>내 사진첩</h2>
+      <form id="photoForm" class="card upload">
+        <input id="photoFiles" type="file" accept="image/*" multiple required>
+        <input id="photoCaption" type="text" maxlength="200" placeholder="사진 설명 (선택)">
+        <select id="photoVis">
+          <option value="public">🌍 전체 공개</option>
+          <option value="private">🔒 나만 보기</option>
+        </select>
+        <button class="btn primary" type="submit">사진 올리기</button>
+      </form>
+      <div id="albumGrid" class="grid"></div>
+      <p id="albumEmpty" class="empty hidden">아직 올린 사진이 없어요.</p>
+    </section>
+
+    <!-- 비밀 일기 -->
+    <section id="diaryView" class="view hidden">
+      <h2>비밀 일기 🔒 <small>암호화되어 저장됩니다</small></h2>
+      <form id="diaryForm" class="card diary-form">
+        <input id="diaryTitle" type="text" maxlength="100" placeholder="제목" required>
+        <div class="row">
+          <input id="diaryDate" type="date" required>
+          <select id="diaryMood">
+            <option>😊</option><option>😐</option><option>😢</option><option>😡</option><option>😴</option><option>🥰</option>
+          </select>
+        </div>
+        <textarea id="diaryBody" rows="6" placeholder="오늘의 비밀 이야기를 적어보세요..." required></textarea>
+        <input type="hidden" id="diaryEditId">
+        <div class="row">
+          <button class="btn primary" type="submit" id="diarySave">저장</button>
+          <button class="btn" type="button" id="diaryCancel">취소</button>
+        </div>
+      </form>
+      <div id="diaryList"></div>
+      <p id="diaryEmpty" class="empty hidden">아직 작성한 일기가 없어요.</p>
+    </section>
+  </main>
+</div>
+
+<!-- 사진 상세 -->
+<div id="lightbox" class="lightbox hidden">
+  <div class="lb-inner">
+    <button id="lbClose" class="lb-close">✕</button>
+    <img id="lbImg" alt="">
+    <div class="lb-side">
+      <div id="lbMeta"></div>
+      <div id="lbComments"></div>
+      <form id="commentForm"><input id="commentInput" maxlength="200" placeholder="댓글 달기..." required><button class="btn small primary">등록</button></form>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="app.js"></script>
+</body>
+</html>
